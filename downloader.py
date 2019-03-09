@@ -1,9 +1,11 @@
+# Written by Ryan West
+
 import requests
-from urllib import request
 
-
+# modify these to change range
 startNum = 1000
 filesToRetrieve = 5
+
 curFile = startNum
 
 while curFile < startNum + filesToRetrieve:
@@ -27,8 +29,3 @@ while curFile < startNum + filesToRetrieve:
         else:
             print('Book #' + str(curFile) + ' failed: ' + str(r.status_code))
     curFile += 1
-
-
-
-    #print(r.text)
-
