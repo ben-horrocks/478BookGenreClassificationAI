@@ -19,7 +19,7 @@ def parse_file(file):
             if found:
                 return result
             if len(line) > 15:
-                line = re.sub(r'[^a-zA-Z0-9\ ]+', '', line)
+                #  line = re.sub(r'[^a-zA-Z0-9\ ]+', '', line)
                 result.append(line)
         else:
             found = end_header.search(line) or start_body.search(line)
