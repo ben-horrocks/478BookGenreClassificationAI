@@ -1,1 +1,4 @@
 .idea
+parsed_books/parsed*.txt
+books/*.txt
+
