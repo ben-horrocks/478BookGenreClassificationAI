@@ -13,13 +13,20 @@ def parse_file(file):
     ending_two = re.compile('APPENDIX')
     body = False
     result = []
+    line = file.pop(0)
+    line = re.sub(r'The Project Gutenberg EBook of ', '', line)
+    line = line.split(',')
+    if len(line) == 2:
+        title, author = line[0], line[1]
+        result.append(title)
+        result.append(author)
     for line in file:
         if body:
             found = end_body.search(line) or ending_one.search(line) or ending_two.search(line)
             if found:
                 return result
             if len(line) > 15:
-                #  line = re.sub(r'[^a-zA-Z0-9\ ]+', '', line)
+                line = re.sub(r'[^a-zA-Z0-9\ \,\.\'\"\!\?\-]+', '', line)
                 result.append(line)
         else:
             found = end_header.search(line) or start_body.search(line)
