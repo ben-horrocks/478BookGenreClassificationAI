@@ -6,6 +6,7 @@ import re
 
 
 def parse_file(file):
+    file = file.split('\n')
     end_header = re.compile('\*\*\* START OF THIS PROJECT GUTENBERG EBOOK*')
     start_body = re.compile('CONTENTS')
     end_body = re.compile('\*\*\* END OF THIS PROJECT GUTENBERG EBOOK*')
@@ -32,7 +33,7 @@ def parse_file(file):
             found = end_header.search(line) or start_body.search(line)
             if found:
                 body = True
-    return file
+    return result
 
 
 parser = argparse.ArgumentParser(description='Parses a text file and removes the header and footer ')
@@ -46,7 +47,7 @@ print(files)
 while len(files) > 0:
     file = files.pop(0)
     if os.path.isfile(file):
-        f = parse_file(open(file, 'r', encoding="utf-8").read().split('\n'))
+        f = parse_file(open(file, 'r', encoding="utf-8").read())
         new_file = 'parsed_books/parsed' + file.split('/')[-1]
         out = open(new_file, 'w+', encoding="utf-8")
         for ln in f:
