@@ -2,7 +2,7 @@
 
 import requests
 
-# modify these to change range
+# modify these to change range  
 startNum = 1000
 filesToRetrieve = 5
 
