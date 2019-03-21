@@ -36,27 +36,25 @@ def parse_file(file):
     return result
 
 
-parser = argparse.ArgumentParser(description='Parses a text file and removes the header and footer ')
-parser.add_argument('Files', metavar='N', type=str, nargs='+',
-                    help='an integer for the accumulator')
-
-args = parser.parse_args()
-
-files = args.Files
-print(files)
-while len(files) > 0:
-    file = files.pop(0)
-    if os.path.isfile(file):
-        f = parse_file(open(file, 'r', encoding="utf-8").read())
-        new_file = 'parsed_books/parsed' + file.split('/')[-1]
-        out = open(new_file, 'w+', encoding="utf-8")
-        for ln in f:
-            out.write(ln + '\n')
-        out.close()
-    else:
-        files_to_add = os.listdir(file)
-        for each in files_to_add:
-            # files.append(os.path.join(file, each))
-            files.append(file + '/' + each)
-
-
+# parser = argparse.ArgumentParser(description='Parses a text file and removes the header and footer ')
+# parser.add_argument('Files', metavar='N', type=str, nargs='+',
+#                     help='an integer for the accumulator')
+#
+# args = parser.parse_args()
+#
+# files = args.Files
+# print(files)
+# while len(files) > 0:
+#     file = files.pop(0)
+#     if os.path.isfile(file):
+#         f = parse_file(open(file, 'r', encoding="utf-8").read())
+#         new_file = 'parsed_books/parsed' + file.split('/')[-1]
+#         out = open(new_file, 'w+', encoding="utf-8")
+#         for ln in f:
+#             out.write(ln + '\n')
+#         out.close()
+#     else:
+#         files_to_add = os.listdir(file)
+#         for each in files_to_add:
+#             # files.append(os.path.join(file, each))
+#             files.append(file + '/' + each)

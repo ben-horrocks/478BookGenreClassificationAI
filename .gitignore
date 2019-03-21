@@ -1,4 +1,5 @@
 .idea
 parsed_books/parsed*.txt
 books/*.txt
-
+*.pyc
+parsed_books/*.txt
