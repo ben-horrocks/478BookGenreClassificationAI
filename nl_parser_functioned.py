@@ -12,10 +12,10 @@ def nltk_parser(parsed_books):
     with open('data.csv', 'w') as csvFile:
         writer = csv.writer(csvFile)
 
-        header_row = ['book_number', 'title', 'author', 'word_count', 'words_per_sentence', 'average_length_of_word']
+        header_row = ['word_count', 'words_per_sentence', 'average_length_of_word']
         for common_word in most_common_english_words:
             header_row.append(common_word)
-        header_row.append('genre')
+        header_row.extend(['book_number', 'title', 'author', 'genre'])
         writer.writerow(header_row)
 
         for parsed_book, title, author, book_number in parsed_books:
@@ -52,10 +52,10 @@ def nltk_parser(parsed_books):
                 else:
                     most_common_words_in_book[word] = 0
 
-            data_instance = [book_number, title, author, total_word_count, average_words_per_sentence,
-                             average_word_length]
+            data_instance = [total_word_count, average_words_per_sentence, average_word_length]
             for word, word_freq_percent in sorted(most_common_words_in_book.iteritems()):
                 data_instance.append(word_freq_percent)
+            data_instance.extend([book_number, title, author])
 
             try:
                 writer.writerow(data_instance)
