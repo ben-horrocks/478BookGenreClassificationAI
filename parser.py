@@ -14,18 +14,17 @@ def parse_file(file):
     ending_two = re.compile('APPENDIX')
     body = False
     result = []
-    line = file.pop(0)
-    line = re.sub(r'The Project Gutenberg EBook of ', '', line)
-    line = line.split(',')
-    if len(line) == 2:
-        title, author = line[0], line[1]
-        result.append(title)
-        result.append(author)
+    title = ''
+    author = ''
     for line in file:
+        if 'Title:' in line:
+            title = line.split('Title:')[1]
+        if 'Author:' in line:
+            author = line.split('Author:')[1]
         if body:
             found = end_body.search(line) or ending_one.search(line) or ending_two.search(line)
             if found:
-                return result
+                return result, title, author
             if len(line) > 15:
                 line = re.sub(r'[^a-zA-Z0-9\ \,\.\'\"\!\?\-]+', '', line)
                 result.append(line)
@@ -33,8 +32,7 @@ def parse_file(file):
             found = end_header.search(line) or start_body.search(line)
             if found:
                 body = True
-    return result
-
+    return result, title, author
 
 # parser = argparse.ArgumentParser(description='Parses a text file and removes the header and footer ')
 # parser.add_argument('Files', metavar='N', type=str, nargs='+',
