@@ -2,6 +2,7 @@
 parsed_books/parsed*.txt
 books/*.txt
 *.pyc
+*.gz
 parsed_books/*.txt
 
 .DS_Store
