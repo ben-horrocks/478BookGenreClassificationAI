@@ -37,10 +37,10 @@
 % Put where the files are available in the appropriate places.
 
 \title{Determining Genre of Classical Literature with Machine Learning}
-\author{Tony Martinez \\
+\author{Ben Guthrie, Jordan Henstrom, Ben Horrocks, Ryan West \\
 Department of Computer Science\\
 Brigham Young University \\
-martinez@cs.byu.edu}
+CS 478, Winter 2019}
 
 \begin{document}
 
@@ -53,8 +53,10 @@ Text classification is a popular problem within machine learning. The ability fo
 \section{Introduction}
 
 Classification of literary works is a different beast than normal text classification. A big reason for this can be attributed to length, books are just much longer than most other text mediums. Additionally, the classifications of literary works are more nuanced than other sources such as a newspaper article. This has lead to a wide array of different results in previous models for literary classification. A large part of the background information that contributed to this project comes from things that we learned throughout the semester. However there were additional avenues beyond class materials that we explored in an effort to improve and refine our model. \par
-One such avenue was the paper \textit{Genre Identification and the Compositional Effect of Genre in Literature} authored by Joseph Worsham and Jugal Kalita. This study was of interest to us in part because they used the same data set that we pulled our data set from. Their study focused on specific genre classification such as romance or adventure stories. Although our learner is focused more broadly on just fiction versus nonfiction, it was useful to read the work of those who approached a similar topic. One thing that they talked about at length was how using just the frequency of words is usually inadequate for the purposes of genre classification. This lead to us including additional features beyond a bag of words to our model. \par
-Another model that we looked at was a model based off predicting genre only by the title of the book. THis model was created by a github user by the name Akshay Bhatia. Similarly to the paper by Worsham and Kalita, Bhatia’s model focuses on classifying works into several genres like adventure and romance. However the ability to get a initial guess just off the title of a book was useful to us when we began refining our model and trying different approaches to increase our prediction accuracy.
+One such avenue was the paper \textit{Genre Identification and the Compositional Effect of Genre in Literature} authored by Joseph Worsham and Jugal Kalita. This study was of interest to us in part because they used the same data set that we used. Their study focused on specific genre classification such as romance or adventure stories. Although our learner is focused more broadly on distinguishing fiction from nonfiction, it was useful to read the work of those who approached a similar topic. When discussing features, Worsham noted that using word frequencies alone is usually inadequate for the purposes of genre classification. Word frequency is defined as how many times the a word appears in a section, in this case an entire book. This lead to us including additional features beyond a bag of words to our model. \par
+Another model that we looked at was a model based off predicting genre only by the title of the book. THis model was created by a github user by the name Akshay Bhatia. Similarly to the paper by Worsham and Kalita, Bhatia’s model focuses on classifying works into several genres like adventure and romance. However the ability to get a initial guess just off the title of a book was useful to us when we began refining our model and trying different approaches to increase our prediction accuracy.\par
+Another resource that we looked into extensively was SpaCy. SpaCy is a library for creating word vectors. Word vectors are lists of numbers that are used to represent a word’s attributes. This allows for a numerical representation of a word that allows someone to treat them more like continuous values. This is applicable to our models because working with continuous values opens new ways we can try to learn with them. For our purposes, we didn’t use SpaCy for most of our project. However we did use it when we implement improvements to our initial models.
+
 \pagebreak
 
 \section{Methods}
@@ -64,12 +66,19 @@ As we stated earlier, we focused on the classification of literary texts as eith
 \subsection{Data Source}
 
 The source for our data set was the web API of Project Gutenberg. This is a project aimed at making a selected count of literary classics available as free ebooks. This allowed us to quickly access hundreds of literary works to use in our model. Using a parser, we downloaded and parsed 963 instances. We then labeled each instance as either “fiction” or “nonfiction” based on wikipedia and goodreads.\par
-There were a few hurdles that we had to address when it came to our data source. The first was that Project Gutenberg would have duplicates of some books. We didn’t quite know why this was the case, but ultimately we decided that having a few duplicates in our data set wouldn’t hurt our model’s ability to work. This is because the average scenario would be that we would have duplicates of fiction works at the same rate as those of nonfiction works. This meant that our overall data would set would have the same ratio.
+There were a few hurdles that we had to address when it came to our data source. The first was that Project Gutenberg would have duplicates of some books. We didn’t quite know why this was the case, but ultimately we decided that having a few duplicates in our data set wouldn’t hurt our model’s ability to work. This is because the average scenario would be that we would have duplicates of fiction works at the same rate as those of nonfiction works. This meant that our overall data would set would have the same ratio.\par
 Another problem we had was that many books would be in different languages. We decided that since we were using english words, we should disregard these entries. As a result, we did not include any works that were written in different languages.\par
-The last major hurdle was that the API that we pulled these books from did not have their genre listed in any obvious place. This meant that for our entire data set we had to hand label each instance as either fiction or nonfiction. This was the main reason that our data set ended up being smaller than we would have initially liked.\par
+The last major hurdle was that the API that we pulled these books from did not have their genre listed in any obvious place. This meant that for our entire data set we had to hand label each instance as either fiction or nonfiction. This was the main reason that our data set ended up being smaller than we would have initially liked.
+
 
 
 \subsection{Data Set}
+When choosing how we wanted to construct our data set, we had to be selective in picking what we saw as the most important features in order to make up for only having roughly 1000 instances in our data set. Ultimately we decided that in addition to having a word count approach, we would also include average sentence length, word count, and average word length. We felt that these would allow our model to have a better classification accuracy.\par
+We originally wanted to categorize our books into multiple genres (horror, romance, sci-fi, fantasy, mystery, and nonfiction), but when labelling our data, we found that it was difficult at times to label these books into these categories. In the end, we decided to simplify it to classification as either fiction or nonfiction. This allowed us to label data more quickly, increasing the size of our data set.\par
+The largest part of our data set is word frequencies for the 1000 most common words in the english language. We chose this one because although each instance in the data set had 0’s for most of the words, we thought that the words they did have would be a good indicator of whether or not they were fiction. For example, the word ‘republican’ would be an indicator that the work is either a historical fiction centering around some governmental plot, or it is nonfiction. Since the latter is more common by far, this word could help to correctly classify the work.\par
+Another feature that we used was average word length. The average length of words in the english language is 4, however we didn’t know if this average held between fiction and nonfiction. It is possible that nonfiction is more pedantic than fiction and therefore will have a larger average. We didn’t know and decided it would be an interesting metric to try to see if it was indicative in any way.\par
+We chose to include average sentence length for the same reason as average word length. There is no solid evidence of a correlation in sentence length and genre. However this could have been a feature that when paired with another, gives us an idea on it’s genre.
+
 
 \subsection{Selected Models}
 
